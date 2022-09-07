@@ -36,8 +36,6 @@ const Posts = ({ posts, setPosts, token }) => {
     }
   };
 
-  console.log(posts)
-
   useEffect(() => {
     fetchPosts();
   }, [token]);

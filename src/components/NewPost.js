@@ -51,7 +51,7 @@ const NewPost = ({ token }) => {
 
   return (
     <div>
-      <form className="row g-3 m-5">
+      <form className="row g-3 m-3">
         <div className="col-md-6">
           <label className="form-label">Title</label>
           <input
@@ -105,7 +105,7 @@ const NewPost = ({ token }) => {
             Will Deliver?
           </div>
         </div>
-        <div className="col-12">
+        <div className="col-12 d-flex justify-content-center">
           <button
             type="submit"
             className="btn btn-primary"
