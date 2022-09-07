@@ -1,58 +1,48 @@
-import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
 
-const Home = ({ username, password, setUsername, setPassword }) => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(username);
-    console.log(password);
-  };
+const Home = ({ username, password, setUsername, setPassword, setToken }) => {
+  let navigate = useNavigate();
 
-  const newAccount = async () => {
-    const resp = await fetch(baseUrl + "/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: {
-          username: `${username}`,
-          password: `${password}`,
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(baseUrl + "/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    });
-    const result = await resp.json();
-    console.log(result);
+        body: JSON.stringify({
+          user: {
+            username: username,
+            password: password,
+          },
+        }),
+      });
+      const data = await response.json();
+      setToken(data.data.token);
+      data.success ? navigate("/Posts") : alert(data.error.message);
+    } catch (e) {
+      console.error("Error!", e);
+    }
   };
-
-  // newAccount();
 
   return (
-    <form className="m-3" onSubmit={handleSubmit}>
-      <div className="row mb-3">
-        <label className="col-sm-2 col-form-label" htmlFor="username">
-          Username
-        </label>
-        <div className="col-sm-10">
+    <form className="m-2 d-flex justify-content-center flex-column min-vh-100">
+      <div className="row mb-3 d-flex justify-content-center">
+        <label className="col-sm-2 col-form-label">Username</label>
+        <div className="col-sm-4">
           <input
-            type="username"
-            name="username"
-            value={username}
             onChange={(event) => setUsername(event.target.value)}
             className="form-control"
           />
         </div>
       </div>
-      <div className="row mb-3">
-        <label className="col-sm-2 col-form-label" htmlFor="password">
-          Password
-        </label>
-        <div className="col-sm-10">
+      <div className="row mb-3 d-flex justify-content-center">
+        <label className="col-sm-2 col-form-label">Password</label>
+        <div className="col-sm-4">
           <input
             type="password"
-            name="password"
-            value={password}
             onChange={(event) => {
               setPassword(event.target.value);
             }}
@@ -61,12 +51,20 @@ const Home = ({ username, password, setUsername, setPassword }) => {
         </div>
       </div>
       <div className="d-flex justify-content-center">
-        <button type="submit" className="btn btn-primary me-2">
+        <button
+          type="submit"
+          className="btn btn-primary me-2"
+          value="login"
+          onClick={(event) => {
+            event.preventDefault();
+            handleLogin();
+          }}
+        >
           Sign In
         </button>
-        <button type="submit" className="btn btn-primary">
-          Create Account
-        </button>
+      </div>
+      <div className="d-flex justify-content-center mt-4">
+        <Link to="/SignUp">Don't have an account? Sign up here! </Link>
       </div>
     </form>
   );

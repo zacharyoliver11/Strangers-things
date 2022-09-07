@@ -4,11 +4,14 @@ import Posts from "./Posts";
 import Home from "./Home";
 import Messages from "./Messages";
 import Logout from "./Logout";
+import SignUp from "./SignUp";
+import NewPost from "./NewPost";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
 
   return (
     <div>
@@ -42,15 +45,35 @@ const App = () => {
                   setUsername={setUsername}
                   password={password}
                   setPassword={setPassword}
+                  setToken={setToken}
+                  token={token}
                 />
               }
             />
             <Route
               path="/Posts"
-              element={<Posts posts={posts} setPosts={setPosts} />}
+              element={<Posts posts={posts} setPosts={setPosts} token={token} />}
             />
             <Route path="/Messages" element={<Messages />} />
             <Route path="/Logout" element={<Logout />} />
+            <Route
+              path="/SignUp"
+              element={
+                <SignUp
+                  username={username}
+                  setUsername={setUsername}
+                  password={password}
+                  setPassword={setPassword}
+                  setToken={setToken}
+                />
+              }
+            />
+            <Route
+              path="/NewPost"
+              element={
+                <NewPost token={token} posts={posts} setPosts={setPosts} />
+              }
+            />
           </Routes>
         </div>
       </BrowserRouter>
