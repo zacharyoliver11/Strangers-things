@@ -1,17 +1,28 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { useState } from "react";
 import Posts from "./Posts";
-import Home from "./Home";
 import Messages from "./Messages";
 import Logout from "./Logout";
 import SignUp from "./SignUp";
 import NewPost from "./NewPost";
+import Login from "./Login";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+
+  const handleLogout = () => {
+    setPassword("");
+    setToken("");
+    setUsername("");
+  };
 
   return (
     <div>
@@ -21,18 +32,20 @@ const App = () => {
             <h1>Stranger's Things</h1>
           </div>
           <div>
-            <Link className="me-2" to="/">
-              Home
-            </Link>
+            {!token ? (
+              <Link className="me-2" to="/">
+                Login
+              </Link>
+            ) : null}
             <Link className="me-2" to="/Posts">
               Posts
             </Link>
             <Link className="me-2" to="/Messages">
               Messages
             </Link>
-            <Link className="me-2" to="/Logout">
-              Logout
-            </Link>
+            {token ? (
+              <button type="button" onClick={handleLogout} className="btn btn-link mb-1">Logout</button>
+            ) : null}
           </div>
         </nav>
         <div>
@@ -40,7 +53,7 @@ const App = () => {
             <Route
               path="/"
               element={
-                <Home
+                <Login
                   username={username}
                   setUsername={setUsername}
                   password={password}
@@ -52,10 +65,12 @@ const App = () => {
             />
             <Route
               path="/Posts"
-              element={<Posts posts={posts} setPosts={setPosts} token={token} />}
+              element={
+                <Posts token={token} posts={posts} setPosts={setPosts} />
+              }
             />
             <Route path="/Messages" element={<Messages />} />
-            <Route path="/Logout" element={<Logout />} />
+            <Route path="/Login" element={<Login />} />
             <Route
               path="/SignUp"
               element={
@@ -68,6 +83,7 @@ const App = () => {
                 />
               }
             />
+            <Route path="/Logout" element={<Logout />} />
             <Route
               path="/NewPost"
               element={

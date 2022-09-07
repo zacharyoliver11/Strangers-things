@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
 const Logout = () => {
   return (
-    <div>
-      <h1>Logout</h1>
+    <div className="alert alert-primary" role="alert">
+      You have successfully signed out. To log in again please visit&nbsp;
+      <Link to="/Login">here</Link>.
     </div>
   );
 };

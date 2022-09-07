@@ -2,8 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
 
-const Home = ({ username, password, setUsername, setPassword, setToken }) => {
-  let navigate = useNavigate();
+const Login = ({
+  username,
+  password,
+  setUsername,
+  setPassword,
+  setToken,
+}) => {
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -70,4 +76,4 @@ const Home = ({ username, password, setUsername, setPassword, setToken }) => {
   );
 };
 
-export default Home;
+export default Login;

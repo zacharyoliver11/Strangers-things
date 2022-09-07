@@ -20,15 +20,34 @@ const Posts = ({ posts, setPosts, token }) => {
     fetchPosts();
   }, []);
 
-  console.log(token);
-
   return (
     <div>
+      {/* {
+        <div
+          class="alert alert-warning alert-dismissible fade show"
+          role="alert"
+        >
+          You should check in on some of those fields below.
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      } */}
       <div className="m-3">
-        <Link to="/NewPost">Create New Listing Here</Link>
+        {token ? (
+          <Link to="/NewPost">Create New Listing Here</Link>
+        ) : (
+          <Link to="/Login">
+            Login to create new listings, and message sellers!
+          </Link>
+        )}
       </div>
 
       <input
+        className="m-3"
         type="text"
         placeholder="search posts"
         value={searchValue}
@@ -45,9 +64,11 @@ const Posts = ({ posts, setPosts, token }) => {
             <p className="card-text">
               Will Deliver: {post.willDeliver ? "Yes" : "No"}
             </p>
-            <a href="#" className="btn btn-primary">
-              Message Seller
-            </a>
+            {token ? (
+              <Link to="/Messages" className="btn btn-primary">
+                Message Seller
+              </Link>
+            ) : null}
           </div>
         </div>
       ))}

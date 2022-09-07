@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
 
-const SignUp = ({ username, password, setUsername, setPassword }) => {
+const SignUp = ({ username, password, setUsername, setPassword, setToken }) => {
   const navigate = useNavigate();
   const handleNewAccount = async () => {
     try {
@@ -19,8 +19,8 @@ const SignUp = ({ username, password, setUsername, setPassword }) => {
         }),
       });
       const data = await response.json();
+      setToken(data.data.token);
       data.success ? navigate("/Posts") : alert(data.error.message);
-      console.log(data);
     } catch (e) {
       console.error("Error!", e);
     }
