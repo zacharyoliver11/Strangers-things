@@ -8,6 +8,8 @@ const Login = ({
   setUsername,
   setPassword,
   setToken,
+  error,
+  setError,
 }) => {
   const navigate = useNavigate();
 
@@ -26,34 +28,41 @@ const Login = ({
         }),
       });
       const data = await response.json();
+
+      if (!response.ok) {
+        throw data.error.message;
+      }
+
       setToken(data.data.token);
-      data.success ? navigate("/Posts") : alert(data.error.message);
+      navigate("/Posts");
     } catch (e) {
       console.error("Error!", e);
+      setError(e);
     }
   };
 
   return (
-    <form className="m-2 d-flex justify-content-center flex-column min-vh-100">
+    <form className="m-5 d-flex justify-content-center flex-column">
       <div className="row mb-3 d-flex justify-content-center">
-        <label className="col-sm-2 col-form-label">Username</label>
         <div className="col-sm-4">
           <input
+            placeholder="username"
             onChange={(event) => setUsername(event.target.value)}
             className="form-control"
           />
         </div>
       </div>
       <div className="row mb-3 d-flex justify-content-center">
-        <label className="col-sm-2 col-form-label">Password</label>
         <div className="col-sm-4">
           <input
+            placeholder="password"
             type="password"
             onChange={(event) => {
               setPassword(event.target.value);
             }}
             className="form-control"
           />
+          <p>{error}</p>
         </div>
       </div>
       <div className="d-flex justify-content-center">

@@ -1,13 +1,7 @@
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  Routes,
-} from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Posts from "./Posts";
 import Messages from "./Messages";
-import Logout from "./Logout";
 import SignUp from "./SignUp";
 import NewPost from "./NewPost";
 import Login from "./Login";
@@ -16,7 +10,14 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
+  const [error, setError] = useState("");
+  const [token, setToken] = useState(
+    window.localStorage.getItem("token") || ""
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("token", token);
+  }, [token]);
 
   const handleLogout = () => {
     setPassword("");
@@ -27,25 +28,46 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-        <nav className="d-flex align-items-center justify-content-between">
-          <div>
-            <h1>Stranger's Things</h1>
-          </div>
-          <div>
-            {!token ? (
-              <Link className="me-2" to="/">
-                Login
-              </Link>
-            ) : null}
-            <Link className="me-2" to="/Posts">
-              Posts
-            </Link>
-            <Link className="me-2" to="/Messages">
-              Messages
-            </Link>
-            {token ? (
-              <button type="button" onClick={handleLogout} className="btn btn-link mb-1">Logout</button>
-            ) : null}
+        <nav className="navbar navbar-expand-xl navbar-dark bg-dark">
+          <div className="container-fluid">
+            <h1 className="navbar-brand mt-2">Stranger's Things</h1>
+            <div className="collapse navbar-collapse show">
+              <ul className="navbar-nav me-auto mb-2 mb-xl-0">
+                <li className="nav-item">
+                  {!token && (
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      to="/"
+                    >
+                      Login
+                    </Link>
+                  )}
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/Posts">
+                    Posts
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {token && (
+                    <Link className="nav-link" to="/Messages">
+                      Messages
+                    </Link>
+                  )}
+                </li>
+              </ul>
+              <form className="d-flex">
+                {token && (
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-outline-light"
+                  >
+                    Logout
+                  </button>
+                )}
+              </form>
+            </div>
           </div>
         </nav>
         <div>
@@ -60,6 +82,8 @@ const App = () => {
                   setPassword={setPassword}
                   setToken={setToken}
                   token={token}
+                  error={error}
+                  setError={setError}
                 />
               }
             />
@@ -83,7 +107,6 @@ const App = () => {
                 />
               }
             />
-            <Route path="/Logout" element={<Logout />} />
             <Route
               path="/NewPost"
               element={

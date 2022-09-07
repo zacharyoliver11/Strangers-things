@@ -27,20 +27,20 @@ const SignUp = ({ username, password, setUsername, setPassword, setToken }) => {
   };
 
   return (
-    <form className="m-2 d-flex justify-content-center flex-column min-vh-100">
+    <form className="m-5 d-flex justify-content-center flex-column">
       <div className="row mb-3 d-flex justify-content-center">
-        <label className="col-sm-2 col-form-label">Username</label>
         <div className="col-sm-4">
           <input
+            placeholder="username"
             onChange={(event) => setUsername(event.target.value)}
             className="form-control"
           />
         </div>
       </div>
       <div className="row mb-3 d-flex justify-content-center">
-        <label className="col-sm-2 col-form-label">Password</label>
         <div className="col-sm-4">
           <input
+            placeholder="password"
             type="password"
             onChange={(event) => {
               setPassword(event.target.value);
