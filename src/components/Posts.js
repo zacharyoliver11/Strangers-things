@@ -54,7 +54,6 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
       }),
     });
     const data = await resp.json();
-    console.log(data)
   };
 
   return (

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const Profile = ({ handleDelete, posts, token, baseUrl }) => {
+const Profile = ({ handleDelete, posts, token, baseUrl, username }) => {
   const myPosts = posts.filter((post) => post.isAuthor);
   const [messages, setMessages] = useState([]);
 
@@ -52,18 +52,29 @@ const Profile = ({ handleDelete, posts, token, baseUrl }) => {
           </div>
           <div>
             <h1 className="m-3 mt-0">Messages</h1>
-            {messages.map((message) => (
-              <div className="card m-3 mt-0" key={message._id}>
-                <div className="card-body">
-                  <h4 className="card-title">Post Title: {message.post.title}</h4>
-                  <p className="card-text">{message.content}</p>
-                  <p className="card-text">From: {message.fromUser.username}</p>
-                  <Link to="/Messages" className="btn btn-primary">
-                    Message Seller
-                  </Link>
-                </div>
-              </div>
-            ))}
+            {messages.map(
+              (message) =>
+                message.fromUser.username !== username && (
+                  <div className="card m-3 mt-0" key={message._id}>
+                    <div className="card-body">
+                      <h4 className="card-title">
+                        Post Title: {message.post.title}
+                      </h4>
+                      <div className="card m-3">
+                        <div className="card-body m-3">
+                          Message: {message.content}
+                        </div>
+                      </div>
+                      <p className="card-text">
+                        <strong>From:</strong> {message.fromUser.username}
+                      </p>
+                      {/* <Link to="/Messages" className="btn btn-primary">
+                        Message Seller
+                      </Link> */}
+                    </div>
+                  </div>
+                )
+            )}
           </div>
         </div>
       ) : (
