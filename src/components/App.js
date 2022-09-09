@@ -1,10 +1,11 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Posts from "./Posts";
-import Messages from "./Messages";
+import Profile from "./Profile";
 import SignUp from "./SignUp";
 import NewPost from "./NewPost";
 import Login from "./Login";
+const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -25,35 +26,52 @@ const App = () => {
     setUsername("");
   };
 
+  const handleDelete = async (postID, event) => {
+    try {
+      const resp = await fetch(baseUrl + `/posts/${postID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await resp.json();
+      if (data) {
+        const newPosts = posts.filter((p) => {
+          return p._id !== postID;
+        });
+        setPosts(newPosts);
+      }
+    } catch (e) {
+      console.error("Error", e);
+    }
+  };
+
   return (
     <div>
       <BrowserRouter>
-        <nav className="navbar navbar-expand-xl navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-xl navbar-dark bg-dark p-2 sticky-top">
           <div className="container-fluid">
-            <h1 className="navbar-brand mt-2">Stranger's Things</h1>
+            <h1 className="navbar-brand fs-1">Stranger's Things</h1>
             <div className="collapse navbar-collapse show">
               <ul className="navbar-nav me-auto mb-2 mb-xl-0">
                 <li className="nav-item">
                   {!token && (
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      to="/"
-                    >
+                    <NavLink className="nav-link fs-5" aria-current="page" to="/">
                       Login
-                    </Link>
+                    </NavLink>
                   )}
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/Posts">
+                  <NavLink className="nav-link fs-5" to="/Posts">
                     Posts
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
                   {token && (
-                    <Link className="nav-link" to="/Messages">
-                      Messages
-                    </Link>
+                    <NavLink className="nav-link fs-5" to="/Profile">
+                      Profile
+                    </NavLink>
                   )}
                 </li>
               </ul>
@@ -61,7 +79,7 @@ const App = () => {
                 {token && (
                   <button
                     onClick={handleLogout}
-                    className="btn btn-outline-light"
+                    className="btn btn-outline-light fs-6"
                   >
                     Logout
                   </button>
@@ -90,10 +108,18 @@ const App = () => {
             <Route
               path="/Posts"
               element={
-                <Posts token={token} posts={posts} setPosts={setPosts} />
+                <Posts
+                  token={token}
+                  posts={posts}
+                  setPosts={setPosts}
+                  handleDelete={handleDelete}
+                />
               }
             />
-            <Route path="/Messages" element={<Messages />} />
+            <Route
+              path="/Profile"
+              element={<Profile handleDelete={handleDelete} posts={posts} token={token} />}
+            />
             <Route path="/Login" element={<Login />} />
             <Route
               path="/SignUp"
@@ -104,6 +130,8 @@ const App = () => {
                   password={password}
                   setPassword={setPassword}
                   setToken={setToken}
+                  error={error}
+                  setError={setError}
                 />
               }
             />

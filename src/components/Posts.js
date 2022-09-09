@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
 
-const Posts = ({ posts, setPosts, token }) => {
+const Posts = ({ posts, setPosts, token, handleDelete }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const postMatches = (post) => {
@@ -40,27 +40,6 @@ const Posts = ({ posts, setPosts, token }) => {
     fetchPosts();
   }, [token]);
 
-  const handleDelete = async (postID) => {
-    try {
-      const resp = await fetch(baseUrl + `/posts/${postID}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await resp.json();
-      if (data) {
-        const newPosts = posts.filter((p) => {
-          return p._id !== postID;
-        });
-        setPosts(newPosts);
-      }
-    } catch (e) {
-      console.error("Error", e);
-    }
-  };
-
   return (
     <div>
       <div className="m-3">
@@ -93,20 +72,20 @@ const Posts = ({ posts, setPosts, token }) => {
             <p className="card-text">
               Will Deliver: {post.willDeliver ? "Yes" : "No"}
             </p>
-            {token && !post.isAuthor ? (
+            {token && !post.isAuthor && (
               <Link to="/Messages" className="btn btn-primary">
                 Message Seller
               </Link>
-            ) : null}
+            )}
 
-            {post.isAuthor ? (
+            {post.isAuthor && (
               <button
-                className="btn btn-danger ms-2"
+                className="btn btn-danger"
                 onClick={() => handleDelete(post._id)}
               >
                 Delete
               </button>
-            ) : null}
+            )}
           </div>
         </div>
       ))}
