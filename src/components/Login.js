@@ -61,7 +61,7 @@ const Login = ({
             }}
             className="form-control"
           />
-          <p>{error}</p>
+          {username + password !== "" && <p>{error}</p>}
         </div>
       </div>
       <div className="d-flex justify-content-center">

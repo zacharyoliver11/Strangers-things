@@ -1,6 +1,15 @@
 import { useNavigate, Link } from "react-router-dom";
 
-const SignUp = ({ username, password, setUsername, setPassword, setToken, baseUrl }) => {
+const SignUp = ({
+  username,
+  password,
+  setUsername,
+  setPassword,
+  setToken,
+  baseUrl,
+  error,
+  setError,
+}) => {
   const navigate = useNavigate();
   const handleNewAccount = async () => {
     try {
@@ -17,10 +26,14 @@ const SignUp = ({ username, password, setUsername, setPassword, setToken, baseUr
         }),
       });
       const data = await response.json();
+      if (!response.ok) {
+        throw data.error.message;
+      }
       setToken(data.data.token);
-      data.success ? navigate("/Posts") : alert(data.error.message);
+      navigate("/Posts");
     } catch (e) {
       console.error("Error!", e);
+      setError(e);
     }
   };
 
@@ -45,6 +58,7 @@ const SignUp = ({ username, password, setUsername, setPassword, setToken, baseUr
             }}
             className="form-control"
           />
+          {username + password !== "" && <p>{error}</p>}
         </div>
       </div>
       <div className="d-flex justify-content-center">

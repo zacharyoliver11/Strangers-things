@@ -33,7 +33,7 @@ const Profile = ({ handleDelete, posts, token, baseUrl }) => {
             {myPosts.map((post) => (
               <div className="card m-3 mt-0" key={post._id}>
                 <div className="card-body">
-                  <h5 className="card-title">{post.title}</h5>
+                  <h4 className="card-title">{post.title}</h4>
                   <p className="card-text">{post.description}</p>
                   <p className="card-text">Price: {post.price}</p>
                   <p className="card-text">Location: {post.location}</p>
@@ -55,12 +55,9 @@ const Profile = ({ handleDelete, posts, token, baseUrl }) => {
             {messages.map((message) => (
               <div className="card m-3 mt-0" key={message._id}>
                 <div className="card-body">
-                  <h5 className="card-title">
-                    Your Post: {message.post.title}
-                  </h5>
-                  <p className="card-text">
-                    {message.fromUser.username} says: {message.content}
-                  </p>
+                  <h4 className="card-title">Post Title: {message.post.title}</h4>
+                  <p className="card-text">{message.content}</p>
+                  <p className="card-text">From: {message.fromUser.username}</p>
                   <Link to="/Messages" className="btn btn-primary">
                     Message Seller
                   </Link>

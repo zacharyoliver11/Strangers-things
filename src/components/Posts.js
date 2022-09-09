@@ -38,7 +38,6 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
 
   useEffect(() => {
     fetchPosts();
-    handleMessageSubmit();
   }, [token]);
 
   const handleMessageSubmit = async (postID) => {
@@ -50,12 +49,12 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
       },
       body: JSON.stringify({
         message: {
-          content: `${content}`,
+          content: content,
         },
       }),
     });
     const data = await resp.json();
-    console.log(data);
+    console.log(data)
   };
 
   return (
@@ -83,7 +82,7 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
       {filteredPosts.map((post) => (
         <div className="card m-3" key={post._id}>
           <div className="card-body">
-            <h5 className="card-title">{post.title}</h5>
+            <h4 className="card-title">{post.title}</h4>
             <p className="card-text">{post.description}</p>
             <p className="card-text">Price: {post.price}</p>
             <p className="card-text">Location: {post.location}</p>
@@ -92,27 +91,32 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
             </p>
             {token && !post.isAuthor && (
               <button
-                className="btn btn-link "
+                className="btn btn-primary text-left"
                 onClick={() => setShowMessageForm(!showMessageForm)}
               >
                 Message Seller
               </button>
             )}
             {showMessageForm && (
-              <div>
-                <form>
-                  <input
-                    className="form-control mt-3 ms-2"
-                    placeholder="enter message"
-                    onChange={(event) => setContent(event.target.value)}
-                  ></input>
-                  <button
-                    className="btn btn-primary mt-3 ms-2"
-                    onClick={() => handleMessageSubmit(post._id)}
-                  >
-                    Send
-                  </button>
-                </form>
+              <div className="input-group mt-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="enter message"
+                  aria-label="Recipient's username"
+                  aria-describedby="button-addon2"
+                  value={content}
+                  onChange={(event) => setContent(event.target.value)}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleMessageSubmit(post._id);
+                  }}
+                >
+                  Send
+                </button>
               </div>
             )}
 

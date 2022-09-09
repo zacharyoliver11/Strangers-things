@@ -143,6 +143,8 @@ const App = () => {
                   setPassword={setPassword}
                   setToken={setToken}
                   baseUrl={baseUrl}
+                  setError={setError}
+                  error={error}
                 />
               }
             />
