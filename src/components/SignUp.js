@@ -1,8 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 
-const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
-
-const SignUp = ({ username, password, setUsername, setPassword, setToken, error, setError }) => {
+const SignUp = ({ username, password, setUsername, setPassword, setToken, baseUrl }) => {
   const navigate = useNavigate();
   const handleNewAccount = async () => {
     try {

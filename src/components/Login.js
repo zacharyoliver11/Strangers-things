@@ -1,7 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 
-const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
-
 const Login = ({
   username,
   password,
@@ -10,6 +8,7 @@ const Login = ({
   setToken,
   error,
   setError,
+  baseUrl,
 }) => {
   const navigate = useNavigate();
 

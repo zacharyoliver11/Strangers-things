@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
-
-const NewPost = ({ token }) => {
+const NewPost = ({ token, baseUrl }) => {
   const navigate = useNavigate();
   const [newPost, setNewPost] = useState({
     title: "",
@@ -43,7 +41,7 @@ const NewPost = ({ token }) => {
         }),
       });
       const data = await resp.json();
-      navigate("/Posts")
+      navigate("/Posts");
     } catch (e) {
       console.error("Error!", e);
     }

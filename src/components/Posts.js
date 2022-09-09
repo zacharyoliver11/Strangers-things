@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const baseUrl = "https://strangers-things.herokuapp.com/api/2206-ftb-pt-web-pt";
-
-const Posts = ({ posts, setPosts, token, handleDelete }) => {
+const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
   const [searchValue, setSearchValue] = useState("");
+  const [showMessageForm, setShowMessageForm] = useState(false);
+  const [content, setContent] = useState("");
 
   const postMatches = (post) => {
     const textToCheck = (
@@ -38,7 +38,25 @@ const Posts = ({ posts, setPosts, token, handleDelete }) => {
 
   useEffect(() => {
     fetchPosts();
+    handleMessageSubmit();
   }, [token]);
+
+  const handleMessageSubmit = async (postID) => {
+    const resp = await fetch(baseUrl + `/posts/${postID}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        message: {
+          content: `${content}`,
+        },
+      }),
+    });
+    const data = await resp.json();
+    console.log(data);
+  };
 
   return (
     <div>
@@ -73,9 +91,29 @@ const Posts = ({ posts, setPosts, token, handleDelete }) => {
               Will Deliver: {post.willDeliver ? "Yes" : "No"}
             </p>
             {token && !post.isAuthor && (
-              <Link to="/Messages" className="btn btn-primary">
+              <button
+                className="btn btn-link "
+                onClick={() => setShowMessageForm(!showMessageForm)}
+              >
                 Message Seller
-              </Link>
+              </button>
+            )}
+            {showMessageForm && (
+              <div>
+                <form>
+                  <input
+                    className="form-control mt-3 ms-2"
+                    placeholder="enter message"
+                    onChange={(event) => setContent(event.target.value)}
+                  ></input>
+                  <button
+                    className="btn btn-primary mt-3 ms-2"
+                    onClick={() => handleMessageSubmit(post._id)}
+                  >
+                    Send
+                  </button>
+                </form>
+              </div>
             )}
 
             {post.isAuthor && (

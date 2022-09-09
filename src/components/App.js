@@ -26,7 +26,7 @@ const App = () => {
     setUsername("");
   };
 
-  const handleDelete = async (postID, event) => {
+  const handleDelete = async (postID) => {
     try {
       const resp = await fetch(baseUrl + `/posts/${postID}`, {
         method: "DELETE",
@@ -36,12 +36,11 @@ const App = () => {
         },
       });
       const data = await resp.json();
-      if (data) {
-        const newPosts = posts.filter((p) => {
+      setPosts(
+        posts.filter((p) => {
           return p._id !== postID;
-        });
-        setPosts(newPosts);
-      }
+        })
+      );
     } catch (e) {
       console.error("Error", e);
     }
@@ -50,14 +49,18 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-        <nav className="navbar navbar-expand-xl navbar-dark bg-dark p-2 sticky-top">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
           <div className="container-fluid">
             <h1 className="navbar-brand fs-1">Stranger's Things</h1>
             <div className="collapse navbar-collapse show">
-              <ul className="navbar-nav me-auto mb-2 mb-xl-0">
+              <ul className="navbar-nav me-auto mb-2">
                 <li className="nav-item">
                   {!token && (
-                    <NavLink className="nav-link fs-5" aria-current="page" to="/">
+                    <NavLink
+                      className="nav-link fs-5"
+                      aria-current="page"
+                      to="/"
+                    >
                       Login
                     </NavLink>
                   )}
@@ -102,6 +105,7 @@ const App = () => {
                   token={token}
                   error={error}
                   setError={setError}
+                  baseUrl={baseUrl}
                 />
               }
             />
@@ -113,12 +117,20 @@ const App = () => {
                   posts={posts}
                   setPosts={setPosts}
                   handleDelete={handleDelete}
+                  baseUrl={baseUrl}
                 />
               }
             />
             <Route
               path="/Profile"
-              element={<Profile handleDelete={handleDelete} posts={posts} token={token} />}
+              element={
+                <Profile
+                  handleDelete={handleDelete}
+                  posts={posts}
+                  token={token}
+                  baseUrl={baseUrl}
+                />
+              }
             />
             <Route path="/Login" element={<Login />} />
             <Route
@@ -130,15 +142,19 @@ const App = () => {
                   password={password}
                   setPassword={setPassword}
                   setToken={setToken}
-                  error={error}
-                  setError={setError}
+                  baseUrl={baseUrl}
                 />
               }
             />
             <Route
               path="/NewPost"
               element={
-                <NewPost token={token} posts={posts} setPosts={setPosts} />
+                <NewPost
+                  token={token}
+                  posts={posts}
+                  setPosts={setPosts}
+                  baseUrl={baseUrl}
+                />
               }
             />
           </Routes>
