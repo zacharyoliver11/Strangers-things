@@ -1,25 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const NewPost = ({ token, baseUrl }) => {
+const NewPost = ({ token, baseUrl, setPosts }) => {
   const navigate = useNavigate();
-  const [newPost, setNewPost] = useState({
-    title: "",
-    price: "",
-    description: "",
-    location: "",
-    willDeliver: false,
-  });
-
-  const handleNewPost = (event) => {
-    const { name, value, type, checked } = event.target;
-    setNewPost(() => {
-      return {
-        ...newPost,
-        [name]: type === "checkbox" ? checked : value,
-      };
-    });
-  };
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [willDeliver, setWillDeliver] = useState(false);
 
   const createNewPost = async (event) => {
     event.preventDefault();
@@ -32,15 +20,16 @@ const NewPost = ({ token, baseUrl }) => {
         },
         body: JSON.stringify({
           post: {
-            title: newPost.title,
-            description: newPost.description,
-            price: newPost.price,
-            location: newPost.location,
-            willDeliver: newPost.willDeliver,
+            title: title,
+            description: description,
+            price: price,
+            location: location,
+            willDeliver: willDeliver,
           },
         }),
       });
       const data = await resp.json();
+      setPosts((prev) => [data.data.post, ...prev])
       navigate("/Posts");
     } catch (e) {
       console.error("Error", e);
@@ -51,34 +40,34 @@ const NewPost = ({ token, baseUrl }) => {
     <div className="vh-100">
       <h1 className="m-3">Create New Post</h1>
       <form className="row g-3 m-3">
-        <div className="col-12">
+        <div className="col-md-6">
           <label className="form-label">Title</label>
           <input
             type="text"
             className="form-control"
             name="title"
-            value={newPost.title}
-            onChange={handleNewPost}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        <div className="col-12">
+        <div className="col-md-6">
           <label className="form-label">Price</label>
           <input
             type="text"
             className="form-control"
             name="price"
-            value={newPost.price}
-            onChange={handleNewPost}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </div>
         <div className="col-12">
           <label className="form-label">Description</label>
-          <input
+          <textarea
             type="text"
             className="form-control"
             name="description"
-            value={newPost.description}
-            onChange={handleNewPost}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div className="col-12">
@@ -87,8 +76,8 @@ const NewPost = ({ token, baseUrl }) => {
             type="text"
             className="form-control"
             name="location"
-            value={newPost.location}
-            onChange={handleNewPost}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <div className="col-12">
@@ -97,8 +86,8 @@ const NewPost = ({ token, baseUrl }) => {
               className="form-check-input"
               type="checkbox"
               name="willDeliver"
-              checked={newPost.willDeliver}
-              onChange={handleNewPost}
+              value={willDeliver}
+              onChange={() => setWillDeliver(!willDeliver)}
             />
             <label className="form-check-label" />
             Will Deliver?
