@@ -49,7 +49,7 @@ const App = () => {
   return (
     <div className="bg-light">
       <BrowserRouter>
-        <nav className="navbar navbar-expand-sm navbar-dark bg-primary p-2 sticky-top">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
           <div className="container-fluid">
             <h1 className="navbar-brand fs-1">Stranger's Things</h1>
             <div className="collapse navbar-collapse show">

@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = ({
   username,
@@ -32,13 +32,13 @@ const SignUp = ({
       setToken(data.data.token);
       navigate("/Posts");
     } catch (e) {
-      console.error("Error!", e);
+      console.error("Error", e);
       setError(e);
     }
   };
 
   return (
-    <form className="m-5 d-flex justify-content-center flex-column">
+    <form className="d-flex mt-5 flex-column vh-100">
       <div className="row mb-3 d-flex justify-content-center">
         <div className="col-sm-4">
           <input

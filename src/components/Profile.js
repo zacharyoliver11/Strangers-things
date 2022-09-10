@@ -35,10 +35,10 @@ const Profile = ({ handleDelete, posts, token, baseUrl, username }) => {
                 <div className="card-body">
                   <h4 className="card-title">{post.title}</h4>
                   <p className="card-text">{post.description}</p>
-                  <p className="card-text">Price: {post.price}</p>
-                  <p className="card-text">Location: {post.location}</p>
+                  <p className="card-text"><strong>Price: </strong>{post.price}</p>
+                  <p className="card-text"><strong>Location: </strong>{post.location}</p>
                   <p className="card-text">
-                    Will Deliver: {post.willDeliver ? "Yes" : "No"}
+                    <strong>Will Deliver: </strong>{post.willDeliver ? "Yes" : "No"}
                   </p>
                   <button
                     className="btn btn-danger"
@@ -58,19 +58,12 @@ const Profile = ({ handleDelete, posts, token, baseUrl, username }) => {
                   <div className="card m-3 mt-0" key={message._id}>
                     <div className="card-body">
                       <h4 className="card-title">
-                        Post Title: {message.post.title}
+                        {message.post.title}
                       </h4>
-                      <div className="card m-3">
-                        <div className="card-body m-3">
-                          Message: {message.content}
-                        </div>
-                      </div>
+                      <p className="card-text mt-3"><strong>Message: </strong>{message.content}</p>
                       <p className="card-text">
                         <strong>From:</strong> {message.fromUser.username}
                       </p>
-                      {/* <Link to="/Messages" className="btn btn-primary">
-                        Message Seller
-                      </Link> */}
                     </div>
                   </div>
                 )

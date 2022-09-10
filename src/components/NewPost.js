@@ -43,14 +43,15 @@ const NewPost = ({ token, baseUrl }) => {
       const data = await resp.json();
       navigate("/Posts");
     } catch (e) {
-      console.error("Error!", e);
+      console.error("Error", e);
     }
   };
 
   return (
-    <div>
+    <div className="vh-100">
+      <h1 className="m-3">Create New Post</h1>
       <form className="row g-3 m-3">
-        <div className="col-md-6">
+        <div className="col-12">
           <label className="form-label">Title</label>
           <input
             type="text"
@@ -60,7 +61,7 @@ const NewPost = ({ token, baseUrl }) => {
             onChange={handleNewPost}
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-12">
           <label className="form-label">Price</label>
           <input
             type="text"
@@ -80,7 +81,7 @@ const NewPost = ({ token, baseUrl }) => {
             onChange={handleNewPost}
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-12">
           <label className="form-label">Location</label>
           <input
             type="text"

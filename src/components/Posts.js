@@ -32,7 +32,7 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
       const data = await resp.json();
       setPosts(data.data.posts);
     } catch (e) {
-      console.error("Error!", e);
+      console.error("Error", e);
     }
   };
 
@@ -83,10 +83,11 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
           <div className="card-body">
             <h4 className="card-title">{post.title}</h4>
             <p className="card-text">{post.description}</p>
-            <p className="card-text">Price: {post.price}</p>
-            <p className="card-text">Location: {post.location}</p>
+            <p className="card-text"><strong>Price: </strong>{post.price}</p>
+            <p className="card-text"><strong>Location: </strong>{post.location}</p>
+            <p className="card-text"><strong>User: </strong>{post.author.username}</p>
             <p className="card-text">
-              Will Deliver: {post.willDeliver ? "Yes" : "No"}
+              <strong>Will Deliver: </strong>{post.willDeliver ? "Yes" : "No"}
             </p>
             {token && !post.isAuthor && (
               <button
