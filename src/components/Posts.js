@@ -62,7 +62,13 @@ const Posts = ({ posts, setPosts, token, handleDelete, baseUrl }) => {
       </div>
 
       {filteredPosts.map((post) => (
-        <SinglePost key={post._id} baseUrl={baseUrl} post={post} token={token} handleDelete={handleDelete}/>
+        <SinglePost
+          key={post._id}
+          baseUrl={baseUrl}
+          post={post}
+          token={token}
+          handleDelete={handleDelete}
+        />
       ))}
     </div>
   );

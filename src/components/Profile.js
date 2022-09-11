@@ -22,7 +22,7 @@ const Profile = ({ handleDelete, posts, token, baseUrl, username }) => {
 
   useEffect(() => {
     fetchMessages();
-  }, [token]);
+  }, []);
 
   return (
     <div>
